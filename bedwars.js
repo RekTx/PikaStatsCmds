@@ -13,6 +13,7 @@ module.exports = {
 
         let interval = "total", mode = "ALL_MODES";
 
+        // if not enough args
         if (!playerIGN) return message.channel.send("\`!bedwars <IGN> <interval> <mode>\`");
 
         if (userInterval) interval = userInterval.toLowerCase();
@@ -20,6 +21,7 @@ module.exports = {
         if (userMode) mode = userMode.toLowerCase();
         else mode = "ALL_MODES";
 
+        // as url is rly specific, getting users input and coonverting it to that specific text
         if (interval === "weekly" || interval === "week") interval = "weekly";
         else if (interval === "monthly" || interval === "month") interval = "monthly";
         else if (interval === "yearly" || interval === "year") interval = "yearly";
@@ -33,11 +35,13 @@ module.exports = {
         else if (mode === "allmode" || mode === "all" || mode === "overall" || mode === "ALL_MODES") mode = "ALL_MODES";
         else return message.channel.send(`**🛑Error:** ${mode} not recoganized!`);
 
+        // making the url
         const currApi = `https://stats.pika-network.net/api/profile/${playerIGN}/leaderboard?type=bedwars&interval=${interval}&mode=${mode}`;
         const profileAPI = `https://stats.pika-network.net/api/profile/${playerIGN}`;
 
         let isOk = true;
 
+        // checking if player exists
         fetch(profileAPI).then( dataOne => {
             return dataOne.json();
         }).then(objectData => {
@@ -58,6 +62,7 @@ module.exports = {
         else tempMode = mode;
 
 
+        // making basic embed
         let playerStatsEmbed = new Discord.MessageEmbed()
         playerStatsEmbed
             .setTitle(`**${playerIGN}'s Bedwar 🛏 Stats**`)
@@ -67,6 +72,7 @@ module.exports = {
             .setColor("RED");
 
 
+        // now grabing data from the api and converting it to objects
         fetch(currApi).then((isData) => {
             return isData.json();
         }).then((objectedData) => {
